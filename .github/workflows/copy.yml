@@ -21,6 +21,6 @@ jobs:
     - name: Copy files to VM path
       run: |
         # Copy all the files in the repo to the specified path on the VM
-        Copy-Item -Path ${{ github.workspace }}\* -Destination "D:\copy-file" -Recurse
+        Copy-Item -Path ${{ github.workspace }}\* .txt -Destination "D:\copy-file" -Recurse
       shell: powershell
 
