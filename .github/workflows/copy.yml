@@ -11,12 +11,6 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
 
-    - name: Set Execution Policy
-      run: |
-        # Set execution policy to allow script execution for CurrentUser and Process
-        Set-ExecutionPolicy Bypass -Scope CurrentUser -Force
-        Set-ExecutionPolicy Bypass -Scope Process -Force
-      shell: powershell
 
     - name: Copy files to VM path
       run: |
