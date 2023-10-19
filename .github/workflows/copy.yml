@@ -1,7 +1,9 @@
 name: Deploy Files to Windows VM
 
 on:
-  push:  # This will trigger the action for any push event
+  push:
+    branches:
+      - main  # Change this to the branch you want to trigger the action on
 
 jobs:
   deploy:
@@ -19,5 +21,5 @@ jobs:
     - name: Copy files to VM path
       run: |
         # Copy all the files in the repo to the specified path on the VM
-        Copy-Item -Path ${{ github.workspace }}\* -Destination "C:\copy-file" -Recurse
+        Copy-Item -Path ${{ github.workspace }}\* -Destination "D:\copy-file" -Recurse
       shell: powershell
