@@ -1,0 +1,18 @@
+name: Deploy Files to Windows VM
+
+on:
+  push:  # This will trigger the action for any push event
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+
+    - name: Copy files to VM path
+      run: |
+        # Copy all the files in the repo to the specified path on the VM
+        Copy-Item -Path ${{ github.workspace }}\* -Destination "D:\copy-file" -Recurse
+      shell: powershell
