@@ -13,14 +13,10 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
 
-    - name: Set Execution Policy
+    - name: Set Execution Policy and Copy Files
       run: |
-        # Set execution policy to allow script execution
+        # Set execution policy to allow script execution for this session
         Set-ExecutionPolicy Bypass -Scope Process -Force
-      shell: powershell
-
-    - name: Copy files to VM path
-      run: |
         # Copy all the files from the repo to the specified path on the VM
         Copy-Item -Path "${{ github.workspace }}\*" -Destination "C:\copy-file" -Recurse
       shell: powershell
