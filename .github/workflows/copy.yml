@@ -13,11 +13,7 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
 
-    - name: Copy .py files with DDMMYY timeline to VM path
+    - name: Overwrite py files to VM path
       run: |
-        $dateSuffix = (Get-Date).ToString("ddMMyy")
-        Get-ChildItem -Path ${{ github.workspace }}\*.txt -Recurse | ForEach-Object {
-            $newName = "$($_.BaseName)_$dateSuffix$($_.Extension)"
-            Copy-Item -Path $_.FullName -Destination "D:\copy-file\$newName"
-        }
+        Copy-Item -Path ${{ github.workspace }}\*.py -Destination "D:\copy-file" -Recurse
       shell: powershell
