@@ -5,7 +5,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: win-one
 
     steps:
     - name: Checkout repo
