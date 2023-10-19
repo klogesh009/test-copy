@@ -1,24 +1,26 @@
-name: Copy files to Windows VM
+name: Deploy Files to Windows VM
 
 on:
   push:
-    paths:
-      - '**'
+    branches:
+      - main  # Change this to the branch you want to trigger the action on
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: windows-latest  # Use a Windows runner
 
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
 
-    - name: Set Execution Policy and Copy files
+    - name: Set Execution Policy
       run: |
-        # Copy files to the desired path on the Windows VM
-        powershell -ExecutionPolicy Bypass -Command {
-          Copy-Item -Path $env:GITHUB_WORKSPACE\* -Destination 'C:\copy-file' -Recurse -Force
-        }
-      shell: powershell
+        # Set execution policy to allow script execution
+        Set-ExecutionPolicy Bypass -Scope Process -Force
 
+    - name: Copy files to VM path
+      run: |
+        # Copy all the files in the repo to the specified path on the VM
+        Copy-Item -Path ${{ github.workspace }}\* -Destination "D:\copy-file" -Recurse
+      shell: powershell
 
