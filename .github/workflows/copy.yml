@@ -2,14 +2,19 @@ name: Deploy Files to Windows VM
 
 on:
   push:  # This will trigger the action for any push event
-
+  
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: windows-latest  # Use a Windows runner
 
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
+
+    - name: Set Execution Policy
+      run: |
+        # Set execution policy to allow script execution
+        Set-ExecutionPolicy Bypass -Scope Process -Force
 
     - name: Copy files to VM path
       run: |
