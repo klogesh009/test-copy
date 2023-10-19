@@ -2,9 +2,7 @@ name: Deploy Files to Windows VM
 
 on:
   push:
-    branches:
-      - main  # Change this to the branch you want to trigger the action on
-
+    # This will trigger the action for any push event
 jobs:
   deploy:
     runs-on: LAPTOP-3CT3U1FA  # Use a Windows runner
