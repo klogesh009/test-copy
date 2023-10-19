@@ -8,9 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
-    defaults:
-      run:
-        shell: powershells
 
     steps:
     - name: Checkout repo
@@ -20,8 +17,10 @@ jobs:
       run: |
         # Set execution policy to allow script execution
         Set-ExecutionPolicy Bypass -Scope Process -Force
+      shell: powershell
 
     - name: Copy files to VM path
       run: |
         # Copy all the files from the repo to the specified path on the VM
         Copy-Item -Path "${{ github.workspace }}\*" -Destination "C:\copy-file" -Recurse
+      shell: powershell
