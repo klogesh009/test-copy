@@ -1,0 +1,43 @@
+name: Manual Deployment from Artifactory to Windows Servers
+
+on:
+  workflow_dispatch:
+    inputs:
+      server:
+        description: 'Target Server (test1, test2, test3)'
+        required: true
+        type: choice
+        options:
+          - test1
+          - test2
+          - test3
+      fileName:
+        description: 'Name of the file in Artifactory (including extension)'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, Windows]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Download zip from Artifactory
+      shell: pwsh
+      run: |
+        $artifactoryUrl = "https://artifactory.example.com/eapps/file/${{ github.event.inputs.fileName }}"
+        $pathToSave = "${{ github.event.inputs.fileName }}"
+        Invoke-RestMethod -Uri $artifactoryUrl -OutFile $pathToSave -Credential (New-Object System.Management.Automation.PSCredential ('${{ secrets.ARTIFACTORY_USER }}', (ConvertTo-SecureString '${{ secrets.ARTIFACTORY_PASSWORD }}' -AsPlainText -Force)))
+
+    - name: Deploy to Selected Windows Server
+      shell: pwsh
+      run: |
+        $serverName = ${{ github.event.inputs.server }}
+        $destinationPath = "D:/testfile/"
+        $username = "${{ secrets.WINDOWS_USER_$serverName }}"
+        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_PASSWORD_$serverName }}" -AsPlainText -Force
+        $Cred = New-Object System.Management.Automation.PSCredential -ArgumentList ($username, $password)
+        $Session = New-PSSession -ComputerName $serverName -Credential $Cred
+        Copy-Item ".\${{ github.event.inputs.fileName }}" -Destination $destinationPath -ToSession $Session
+        Get-PSSession | Remove-PSSession
