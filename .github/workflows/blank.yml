@@ -22,18 +22,18 @@ jobs:
     - name: Download zip from Artifactory
       shell: pwsh
       run: |
-        $artifactoryUrl = "https://artifactory.example.com/eapps/file/${{ github.event.inputs.fileName }}"
-        $pathToSave = "${{ github.event.inputs.fileName }}"
+        $artifactoryUrl = "https://artifactory.example.com/eapps/file/eapps.exe.zip"
+        $pathToSave = "eapps.exe.zip"
         Invoke-RestMethod -Uri $artifactoryUrl -OutFile $pathToSave -Credential (New-Object System.Management.Automation.PSCredential ('${{ secrets.ARTIFACTORY_USER }}', (ConvertTo-SecureString '${{ secrets.ARTIFACTORY_PASSWORD }}' -AsPlainText -Force)))
 
     - name: Deploy to Selected Windows Server
       shell: pwsh
       run: |
         $serverName = ${{ github.event.inputs.server }}
-        $destinationPath = "D:/testfile/"
+        $destinationPath = "D:\\Data\\testclientapp\\GreaterChina\\HongKong\\HKVantest\\"
         $username = "${{ secrets.WINDOWS_USER_$serverName }}"
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_PASSWORD_$serverName }}" -AsPlainText -Force
         $Cred = New-Object System.Management.Automation.PSCredential -ArgumentList ($username, $password)
         $Session = New-PSSession -ComputerName $serverName -Credential $Cred
-        Copy-Item ".\${{ github.event.inputs.fileName }}" -Destination $destinationPath -ToSession $Session
+        Copy-Item ".\eapps.exe.zip" -Destination $destinationPath -ToSession $Session
         Get-PSSession | Remove-PSSession
