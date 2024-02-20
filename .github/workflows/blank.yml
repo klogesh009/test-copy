@@ -12,7 +12,7 @@ on:
           - test2
           - test3
       fileName:
-        description: 'Name of the file in Artifactory (including extension)'
+        description: 'Name of the file in Artifactory (eapps.exe.zip)'
         required: true
         type: string
 
