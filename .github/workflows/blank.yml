@@ -11,10 +11,6 @@ on:
           - test1
           - test2
           - test3
-      fileName:
-        description: 'Name of the file in Artifactory (eapps.exe.zip)'
-        required: true
-        type: string
 
 jobs:
   deploy:
